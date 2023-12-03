@@ -188,7 +188,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de8edd242b6ef78489e98f2d7903b090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 0
+  currentShipHealth: 0
+  currentShipMenHealth: 0
 --- !u!114 &2818986419052550749
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,7 +214,7 @@ GameObject:
   - component: {fileID: 8902870531855436773}
   - component: {fileID: 9056459797209507270}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: SupplyShipText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -478,7 +479,7 @@ GameObject:
   - component: {fileID: 3028755193398100944}
   - component: {fileID: 6819007135282986866}
   m_Layer: 5
-  m_Name: Healthbar
+  m_Name: ShipHealthbar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

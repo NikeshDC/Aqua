@@ -138,6 +138,7 @@ public class MortarController : MonoBehaviour
                             ProjectileController projectileControllerScript = mortarBomb.GetComponent<ProjectileController>();
                             projectileControllerScript.weaponDamage = shipCategorizer_LevelScript.weaponDamage;
                             projectileControllerScript.isPlayer1Projectile = shipCategorizer_PlayerScript.isP1Ship;
+                            projectileControllerScript.isArcherOrGunmanProjectile = false;
 
                             if (mortarBomb != null)
                             {

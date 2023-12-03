@@ -191,6 +191,7 @@ public class ArcherShoot : MonoBehaviour
                                 ProjectileController projectileControllerScript = arrow.GetComponent<ProjectileController>();
                                 projectileControllerScript.weaponDamage = shipCategorizer_LevelScript.weaponDamage;
                                 projectileControllerScript.isPlayer1Projectile = shipCategorizer_PlayerScript.isP1Ship;
+                                projectileControllerScript.isArcherOrGunmanProjectile = true;
 
                                 //archer shoot animation
                                 archerAnimatorScript[i].archerState = AnimationArcher.ArcherStates.shoot;

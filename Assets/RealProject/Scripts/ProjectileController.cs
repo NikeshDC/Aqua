@@ -6,7 +6,7 @@ public class ProjectileController : MonoBehaviour
 {
     public int weaponDamage;
     public bool isPlayer1Projectile;
-
+    public bool isArcherOrGunmanProjectile;//if archer or gunman projectile, damage only to ship men.
     /*private GameObject sparks;
     private ParticleSystem sparkParticleSystem;
 

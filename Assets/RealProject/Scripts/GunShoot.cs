@@ -165,6 +165,7 @@ public class GunShoot : MonoBehaviour
                                 ProjectileController projectileControllerScript = bullet.GetComponent<ProjectileController>();
                                 projectileControllerScript.weaponDamage = shipCategorizer_LevelScript.weaponDamage;
                                 projectileControllerScript.isPlayer1Projectile = shipCategorizer_PlayerScript.isP1Ship;
+                                projectileControllerScript.isArcherOrGunmanProjectile = true;
 
                                 //gunman shoot animation
                                 gunmanAnimationScript[i].gunmanState = AnimationGunman.GunmanStates.shoot;

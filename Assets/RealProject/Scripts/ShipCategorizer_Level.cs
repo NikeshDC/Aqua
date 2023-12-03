@@ -11,6 +11,7 @@ public class ShipCategorizer_Level : MonoBehaviour
     public ShipLevels shipLevel;
 
     public int shipHealth;
+    public int shipMenHealth;
     private float shipSpeed;
     private int shipCost;
 
@@ -49,24 +50,28 @@ public class ShipCategorizer_Level : MonoBehaviour
         {
             weaponRange = SetParameters.archerWeaponRange[index];
             shipHealth = SetParameters.archerShipHealth[index];
+            shipMenHealth = SetParameters.archerShipMenHealth[index];
             weaponDamage = SetParameters.archerWeaponDamage[index];
         }
         else if (targetingSystem_PhysicsOverlapSphereScript.thisShipType == TargetingSystem_PhysicsOverlapSphere.ShipType.CannonShip)
         {
             weaponRange = SetParameters.cannonWeaponRange[index];
             shipHealth = SetParameters.cannonShipHealth[index];
+            shipMenHealth = SetParameters.cannonShipMenHealth[index];
             weaponDamage = SetParameters.cannonWeaponDamage[index];
         }
         else if (targetingSystem_PhysicsOverlapSphereScript.thisShipType == TargetingSystem_PhysicsOverlapSphere.ShipType.GunmanShip)
         {
             weaponRange = SetParameters.gunmanWeaponRange[index];
             shipHealth = SetParameters.gunmanShipHealth[index];
+            shipMenHealth = SetParameters.gunmanShipMenHealth[index];
             weaponDamage = SetParameters.gunmanWeaponDamage[index];
         }
         else if (targetingSystem_PhysicsOverlapSphereScript.thisShipType == TargetingSystem_PhysicsOverlapSphere.ShipType.MortarShip)
         {
             weaponRange = SetParameters.mortarWeaponRange[index];
             shipHealth = SetParameters.mortarShipHealth[index];
+            shipMenHealth = SetParameters.mortarShipMenHealth[index];
             weaponDamage = SetParameters.mortarWeaponDamage[index];
         }
 

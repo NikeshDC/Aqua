@@ -16,7 +16,7 @@ public class HealthbarFaceCamera : MonoBehaviour
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            if (transform.GetChild(i).gameObject.name == "Text (TMP)")
+            if (transform.GetChild(i).gameObject.name == "LevelText" || transform.GetChild(i).gameObject.name == "SupplyShipText")
             {
                 GameObject gameObject = transform.GetChild(i).gameObject;
                 levelText = gameObject.GetComponent<TextMeshProUGUI>();

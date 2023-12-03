@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
-    private int maxHealth;
-    public int currentHealth;
+    private int maxShipHealth;
+    private int maxShipMenHealth;
 
-    private Healthbar healthbarScript;
+    public int currentShipHealth;
+    public int currentShipMenHealth;
+
+    private ShipHealthBar shipHealthBarScript;
+    private ShipMenHealthBar shipMenHealthBarScript;
+
     private ShipCategorizer_Level shipCategorizer_LevelScript;
     private GameObject scaleFactorGameObject;
     private GameObject shooters;
+
+    private bool isNotSupplyShip = false;
 
     private void Awake()
     {
@@ -19,9 +26,21 @@ public class HealthSystem : MonoBehaviour
             if (transform.GetChild(i).gameObject.name == "Canvas")
             {
                 GameObject canvasGameObject = transform.GetChild(i).gameObject;
-                GameObject healthbarGameObject = canvasGameObject.transform.GetChild(0).gameObject;
 
-                healthbarScript = healthbarGameObject.GetComponent<Healthbar>();
+                for (int j = 0; j < canvasGameObject.transform.childCount; j++)
+                {
+                    GameObject healthbarGameObject = canvasGameObject.transform.GetChild(j).gameObject;
+
+                    if (healthbarGameObject.TryGetComponent<ShipHealthBar>(out _))
+                    {
+                        shipHealthBarScript = healthbarGameObject.GetComponent<ShipHealthBar>();
+                    }
+                    else if (healthbarGameObject.TryGetComponent<ShipMenHealthBar>(out _))
+                    {
+                        shipMenHealthBarScript = healthbarGameObject.GetComponent<ShipMenHealthBar>();
+                        isNotSupplyShip = true;
+                    }
+                }
             }
             else if (transform.GetChild(i).gameObject.name == "ScaleFactorGameObject")
             {
@@ -44,21 +63,35 @@ public class HealthSystem : MonoBehaviour
     {
         if (!TryGetComponent<ShipCategorizer_Level>(out _))
         {
-            maxHealth = SetParameters.supplyShipHealth;
+            maxShipHealth = SetParameters.supplyShipHealth;
+            maxShipMenHealth = 0;
         }
         else
         {
             shipCategorizer_LevelScript = GetComponent<ShipCategorizer_Level>();
-            maxHealth = shipCategorizer_LevelScript.shipHealth;
+            maxShipHealth = shipCategorizer_LevelScript.shipHealth;
+            maxShipMenHealth = shipCategorizer_LevelScript.shipMenHealth;
         }
 
-        currentHealth = maxHealth;
-        healthbarScript.SetMaxHealth(maxHealth);
+        currentShipHealth = maxShipHealth;
+        currentShipMenHealth = maxShipMenHealth;
+        shipHealthBarScript.SetShipMaxHealth(maxShipHealth);
+
+        if (isNotSupplyShip)
+        {
+            shipMenHealthBarScript.SetShipMenMaxHealth(maxShipMenHealth);
+        }
+
     }
-    public void TakeDamage(int damage)
+    public void ShipTakeDamage(int damage)
     {
-        currentHealth -= damage;
-        healthbarScript.SetHealth(currentHealth);
+        currentShipHealth -= damage;
+        shipHealthBarScript.SetShipHealth(currentShipHealth);
+    }
+    public void ShipMenTakeDamage(int damage)
+    {
+        currentShipMenHealth -= damage;
+        shipMenHealthBarScript.SetShipMenHealth(currentShipMenHealth);
     }
     private void Update()
     {
@@ -67,10 +100,10 @@ public class HealthSystem : MonoBehaviour
             DeactivateMen();
         }
     }
-    private void DeactivateMen()
+    private void DeactivateMen()//Later deactivate only men and not weapons for cannon and mortar ship
     {
         //Later Implement checks only when necessary rathen than including in Update() method to improve performance
-        if (currentHealth <= 0)
+        if (currentShipMenHealth <= 0)
         {
             shooters.SetActive(false);
         }

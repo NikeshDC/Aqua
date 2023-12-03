@@ -48,6 +48,12 @@ public static class SetParameters
     public static int[] gunmanShipHealth = new int[] { 160, 220, 280, 340 };
     public static int[] mortarShipHealth = new int[] { 160, 220, 280, 340 };
 
+    //Varying Ship Men Health
+    public static int[] archerShipMenHealth = new int[] { 160, 220, 280, 340 };
+    public static int[] cannonShipMenHealth = new int[] { 160, 220, 280, 340 };
+    public static int[] gunmanShipMenHealth = new int[] { 160, 220, 280, 340 };
+    public static int[] mortarShipMenHealth = new int[] { 160, 220, 280, 340 };
+
     //Varying Weapon Damage Levels
     public static int[] archerWeaponDamage = new int[] { 7, 12, 15, 20 };
     public static int[] cannonWeaponDamage = new int[] { 7, 12, 15, 20 };

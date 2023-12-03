@@ -80,7 +80,7 @@ public class ShipCategorizer_Player : MonoBehaviour
     }
     private void CheckShipHealth()
     {
-        currentShipHealth = healthSystemScript.currentHealth;
+        currentShipHealth = healthSystemScript.currentShipHealth;
         if (currentShipHealth <= 0)
         {
             isFunctionalShip = false;

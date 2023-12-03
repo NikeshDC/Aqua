@@ -149,6 +149,7 @@ public class CannonController : MonoBehaviour
                                 ProjectileController projectileControllerScript = cannonBall.GetComponent<ProjectileController>();
                                 projectileControllerScript.weaponDamage = shipCategorizer_LevelScript.weaponDamage;
                                 projectileControllerScript.isPlayer1Projectile = shipCategorizer_PlayerScript.isP1Ship;
+                                projectileControllerScript.isArcherOrGunmanProjectile = false;
 
                                 if (cannonBall != null)
                                 {

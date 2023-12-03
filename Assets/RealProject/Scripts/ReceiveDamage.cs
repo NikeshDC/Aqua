@@ -25,11 +25,23 @@ public class ReceiveDamage : MonoBehaviour
         if (other.TryGetComponent<ProjectileController>(out ProjectileController projectileControllerScript))
         {
             bool projectileIsOfPlayer1 = projectileControllerScript.isPlayer1Projectile;
+            bool attackerShipIsArcherOrGunmanShip = projectileControllerScript.isArcherOrGunmanProjectile;
+
             if (thisShipIsPlayer1 != projectileIsOfPlayer1)
             {
                 int damage = projectileControllerScript.weaponDamage;
-                healthSystemScript.TakeDamage(damage);
-                print(this.name + " took damage: " + damage);
+
+                if (attackerShipIsArcherOrGunmanShip)//Damage only to ship men health
+                {
+                    healthSystemScript.ShipMenTakeDamage(damage);
+                    print(this.name + " took only MAN damage: " + damage + " from archer/gunman ship.");
+                }
+                else//Damage to both ship as well as ship men
+                {
+                    healthSystemScript.ShipTakeDamage(damage);
+                    healthSystemScript.ShipMenTakeDamage(damage);
+                    print(this.name + " took whole damage: " + damage + " from cannon/mortar ship.");
+                }
             }          
         }
     }
