@@ -8,10 +8,12 @@ public class ShipCategorizer_Player : MonoBehaviour
     private static List<ShipCategorizer_Player> p2ShipList = new List<ShipCategorizer_Player>();
 
     public bool isP1Ship;
-    public bool isFunctionalShip;//not annihilated/destroyed by enemy attack.
+    public bool shipIsFunctional;//not annihilated/destroyed by enemy attack.
+    public bool shipMenAreAlive;
 
     private HealthSystem healthSystemScript;
     private int currentShipHealth;
+    private int currentShipMenHealth;
 
     public static List<ShipCategorizer_Player> GetPlayer1ShipList()
     {
@@ -42,13 +44,15 @@ public class ShipCategorizer_Player : MonoBehaviour
         {
             Debug.LogWarning("Ensure that 0th child is ShipCenter for proper distance calculation between ships!!!" + this.name);
         }
-        isFunctionalShip = true;
+        shipIsFunctional = true;
+        shipMenAreAlive = true;
     }
 
     private void Update()
     {
         TestP1P2ShipList();
         CheckShipHealth();//Later, make sure this check occurs only when ship receives damage, improve perfornamce.
+        CheckShipMenHealth();
     }
     private void AddP1ShipToP1ShipList()
     {
@@ -83,11 +87,23 @@ public class ShipCategorizer_Player : MonoBehaviour
         currentShipHealth = healthSystemScript.currentShipHealth;
         if (currentShipHealth <= 0)
         {
-            isFunctionalShip = false;
+            shipIsFunctional = false;
         }
         else
         {
-            isFunctionalShip = true;
+            shipIsFunctional = true;
+        }
+    }
+    private void CheckShipMenHealth()
+    {
+        currentShipMenHealth = healthSystemScript.currentShipMenHealth;
+        if (currentShipMenHealth <= 0)
+        {
+            shipMenAreAlive = false;
+        }
+        else
+        {
+            shipMenAreAlive = true;
         }
     }
 }

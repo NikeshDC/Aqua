@@ -33,6 +33,8 @@ public class TargetingSystem_PhysicsOverlapSphere : MonoBehaviour
     public ShipType thisShipType;
     private Vector3 myShipPosition;
     private bool thisShipIsFunctional;
+    private bool thisShipMenAreAlive;
+    private bool thisShipIsCannonOrMortarShip;
 
     private ShipCategorizer_Level thisShipCategorizer_LevelScript;
 
@@ -87,22 +89,27 @@ public class TargetingSystem_PhysicsOverlapSphere : MonoBehaviour
         if (TryGetComponent<ArcherShoot>(out _))
         {
             thisShipType = ShipType.ArcherShip;
+            thisShipIsCannonOrMortarShip = false;
         }
         else if (TryGetComponent<CannonShoot>(out _))
         {
             thisShipType = ShipType.CannonShip;
+            thisShipIsCannonOrMortarShip = true;
         }
         else if (TryGetComponent<GunShoot>(out _))
         {
             thisShipType = ShipType.GunmanShip;
+            thisShipIsCannonOrMortarShip = false;
         }
         else if (TryGetComponent<MortarShoot>(out _))
         {
             thisShipType = ShipType.MortarShip;
+            thisShipIsCannonOrMortarShip = true;
         }
-        else
+        else//Remove this condition, since this script is attached only to attacker ship
         {
             thisShipType = ShipType.SupplyShip;
+            thisShipIsCannonOrMortarShip = false;
         }
 
         shipCenter = transform.GetChild(0).transform;
@@ -118,8 +125,10 @@ public class TargetingSystem_PhysicsOverlapSphere : MonoBehaviour
     {
         myShipPosition = shipCenter.position;
 
-        thisShipIsFunctional = thisShipCategorizerPlayerScript.isFunctionalShip;
-        if (thisShipIsFunctional)
+        thisShipIsFunctional = thisShipCategorizerPlayerScript.shipIsFunctional;
+        thisShipMenAreAlive = thisShipCategorizerPlayerScript.shipMenAreAlive;
+
+        if (thisShipIsFunctional && thisShipMenAreAlive)
         {
             AddEnemyShipsInRangeToOurList();
             RemoveShipsOutsideRangeFromOurList();
@@ -147,27 +156,59 @@ public class TargetingSystem_PhysicsOverlapSphere : MonoBehaviour
             {
                 ShipCategorizer_Player shipCategorizer_PlayerScript = collider.GetComponent<ShipCategorizer_Player>();
                 bool shipInRangeIsPlayer1 = shipCategorizer_PlayerScript.isP1Ship;
-                bool shipInRangeIsFunctional = shipCategorizer_PlayerScript.isFunctionalShip;
+                bool shipInRangeIsFunctional = shipCategorizer_PlayerScript.shipIsFunctional;
+                bool shipInRangeMenAreAlive = shipCategorizer_PlayerScript.shipMenAreAlive;
 
-                if (shipInRangeIsPlayer1 != isPlayer1 && shipInRangeIsFunctional)
+                if (thisShipIsCannonOrMortarShip)
                 {
-                    Vector3 enemyShipPosition = collider.transform.GetChild(0).transform.position;
-
-                    // Calculate the distance between this ship and the current enemy ship
-                    float distance = Vector3.Distance(myShipPosition, enemyShipPosition);
-
-                    if (distance <= shipMaxRange)
+                    if (shipInRangeIsFunctional || shipInRangeMenAreAlive)//attack until both ship health as well as ship men's health are zero
                     {
-                        if (!tempList.Contains(collider))
+                        if (shipInRangeIsPlayer1 != isPlayer1)
                         {
-                            /*if (testActiveShip)
+                            Vector3 enemyShipPosition = collider.transform.GetChild(0).transform.position;
+
+                            // Calculate the distance between this ship and the current enemy ship
+                            float distance = Vector3.Distance(myShipPosition, enemyShipPosition);
+
+                            if (distance <= shipMaxRange)
                             {
-                                print("Added " + collider.name + " to our list.");
-                            }*/
-                            enemyShipsInRange.Add(collider);
+                                if (!tempList.Contains(collider))
+                                {
+                                    /*if (testActiveShip)
+                                    {
+                                        print("Added " + collider.name + " to our list.");
+                                    }*/
+                                    enemyShipsInRange.Add(collider);
+                                }
+                            }
                         }
-                    }  
+                    }
                 }
+                else
+                {
+                    if (shipInRangeMenAreAlive)//attack only if ship men's health is not zero
+                    {
+                        if (shipInRangeIsPlayer1 != isPlayer1)
+                        {
+                            Vector3 enemyShipPosition = collider.transform.GetChild(0).transform.position;
+
+                            // Calculate the distance between this ship and the current enemy ship
+                            float distance = Vector3.Distance(myShipPosition, enemyShipPosition);
+
+                            if (distance <= shipMaxRange)
+                            {
+                                if (!tempList.Contains(collider))
+                                {
+                                    /*if (testActiveShip)
+                                    {
+                                        print("Added " + collider.name + " to our list.");
+                                    }*/
+                                    enemyShipsInRange.Add(collider);
+                                }
+                            }
+                        }
+                    }
+                }          
             }
         }
     }
@@ -184,16 +225,31 @@ public class TargetingSystem_PhysicsOverlapSphere : MonoBehaviour
             float distance = Vector3.Distance(myShipPosition, enemyShipPosition);
 
             ShipCategorizer_Player shipCategorizer_PlayerScript = enemyShip.GetComponent<ShipCategorizer_Player>();
-            bool shipInRangeIsFunctional = shipCategorizer_PlayerScript.isFunctionalShip;
+            bool shipInRangeIsFunctional = shipCategorizer_PlayerScript.shipIsFunctional;
+            bool shipInRangeMenAreAlive = shipCategorizer_PlayerScript.shipMenAreAlive;
 
-            if (distance > shipMaxRange || !shipInRangeIsFunctional)
+            if (thisShipIsCannonOrMortarShip)
             {
-                /*if (testActiveShip)
+                if (distance > shipMaxRange || (!shipInRangeIsFunctional && !shipInRangeMenAreAlive))
                 {
-                    print("Removed " + enemyShip.name + " from our list.");
-                }*/
-                enemyShipsInRange.Remove(enemyShip);
-            }              
+                    /*if (testActiveShip)
+                    {
+                        print("Removed " + enemyShip.name + " from our list.");
+                    }*/
+                    enemyShipsInRange.Remove(enemyShip);
+                }
+            }
+            else
+            {
+                if (distance > shipMaxRange || !shipInRangeMenAreAlive)
+                {
+                    /*if (testActiveShip)
+                    {
+                        print("Removed " + enemyShip.name + " from our list.");
+                    }*/
+                    enemyShipsInRange.Remove(enemyShip);
+                }
+            }                      
         }
     }
     private void DetermineWhichShipToAttack()
