@@ -159,6 +159,7 @@ public class CannonController : MonoBehaviour
                                     enableLineRenderer = false;
                                     StartCoroutine(MoveObject(A.position, endPosition, cannonBall));
                                     cannonShootScript.totalAmmoCount--;
+                                    cannonShootScript.ammoSystemScript.AmmoCountDecrease(1);
                                     StartCoroutine(CoolDownTime());
                                 }
                                 //above code executes only once inside update so targetPosition won't be updated if trajectory changes, and bullet moves towards previous target

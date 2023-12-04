@@ -27,8 +27,9 @@ public class GunShoot : MonoBehaviour
 
     private ShipCategorizer_Level shipCategorizer_LevelScript;
     private ShipCategorizer_Player shipCategorizer_PlayerScript;
+    private HealthAmmoSystem ammoSystemScript;
 
-    [SerializeField] private int totalAmmoCount;
+    public int totalAmmoCount;
     private bool sufficientAmmoPresent;
 
     public Transform targetEnemy;
@@ -37,6 +38,7 @@ public class GunShoot : MonoBehaviour
     {
         shipCategorizer_LevelScript = GetComponent<ShipCategorizer_Level>();
         shipCategorizer_PlayerScript = GetComponent<ShipCategorizer_Player>();
+        ammoSystemScript = GetComponent<HealthAmmoSystem>();
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -179,6 +181,7 @@ public class GunShoot : MonoBehaviour
                                     gunmanControllerScript[i].enableLineRenderer = false;
                                     StartCoroutine(MoveObject(A.position, endPosition, bullet));
                                     totalAmmoCount--;
+                                    ammoSystemScript.AmmoCountDecrease(1);
                                     StartCoroutine(CoolDownTime());
                                 }
                             }

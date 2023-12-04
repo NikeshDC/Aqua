@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthSystem : MonoBehaviour
+public class HealthAmmoSystem : MonoBehaviour
 {
     private int maxShipHealth;
     private int maxShipMenHealth;
+    private int maxAmmo;
 
     public int currentShipHealth;
     public int currentShipMenHealth;
+    public int currentAmmo;
 
     private ShipHealthBar shipHealthBarScript;
     private ShipMenHealthBar shipMenHealthBarScript;
+    private ShipAmmoBar shipAmmoBarScript;
 
     private ShipCategorizer_Level shipCategorizer_LevelScript;
     private GameObject scaleFactorGameObject;
@@ -40,6 +43,11 @@ public class HealthSystem : MonoBehaviour
                         shipMenHealthBarScript = healthbarGameObject.GetComponent<ShipMenHealthBar>();
                         isNotSupplyShip = true;
                     }
+                    else if (healthbarGameObject.TryGetComponent<ShipAmmoBar>(out _))
+                    {
+                        shipAmmoBarScript = healthbarGameObject.GetComponent<ShipAmmoBar>();
+                        isNotSupplyShip = true;
+                    }
                 }
             }
             else if (transform.GetChild(i).gameObject.name == "ScaleFactorGameObject")
@@ -65,23 +73,46 @@ public class HealthSystem : MonoBehaviour
         {
             maxShipHealth = SetParameters.supplyShipHealth;
             maxShipMenHealth = 0;
+            maxAmmo = 0;
         }
         else
         {
             shipCategorizer_LevelScript = GetComponent<ShipCategorizer_Level>();
             maxShipHealth = shipCategorizer_LevelScript.shipHealth;
             maxShipMenHealth = shipCategorizer_LevelScript.shipMenHealth;
+
+            if (TryGetComponent<ArcherShoot>(out _))
+            {
+                ArcherShoot archerShootScript = GetComponent<ArcherShoot>();
+                maxAmmo = archerShootScript.totalAmmoCount;
+            }
+            else if (TryGetComponent<GunShoot>(out _))
+            {
+                GunShoot gunShootScript = GetComponent<GunShoot>();
+                maxAmmo = gunShootScript.totalAmmoCount;
+            }
+            else if (TryGetComponent<CannonShoot>(out _))
+            {
+                CannonShoot cannonShootScript = GetComponent<CannonShoot>();
+                maxAmmo = cannonShootScript.totalAmmoCount;
+            }
+            else if (TryGetComponent<MortarShoot>(out _))
+            {
+                MortarShoot mortarShootScript = GetComponent<MortarShoot>();
+                maxAmmo = mortarShootScript.totalAmmoCount;
+            }
         }
 
         currentShipHealth = maxShipHealth;
         currentShipMenHealth = maxShipMenHealth;
+        currentAmmo = maxAmmo;
         shipHealthBarScript.SetShipMaxHealth(maxShipHealth);
 
         if (isNotSupplyShip)
         {
             shipMenHealthBarScript.SetShipMenMaxHealth(maxShipMenHealth);
+            shipAmmoBarScript.SetMaxAmmo(maxAmmo);
         }
-
     }
     public void ShipTakeDamage(int damage)
     {
@@ -92,6 +123,11 @@ public class HealthSystem : MonoBehaviour
     {
         currentShipMenHealth -= damage;
         shipMenHealthBarScript.SetShipMenHealth(currentShipMenHealth);
+    }
+    public void AmmoCountDecrease(int ammoCount)
+    {
+        currentAmmo -= ammoCount;
+        shipAmmoBarScript.SetAmmoCount(currentAmmo);
     }
     private void Update()
     {

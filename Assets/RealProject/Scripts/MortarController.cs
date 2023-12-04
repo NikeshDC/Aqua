@@ -151,6 +151,7 @@ public class MortarController : MonoBehaviour
                                 enableLineRenderer = false;
                                 StartCoroutine(MoveThroughRoute());
                                 mortarShootScript.totalAmmoCount--;
+                                mortarShootScript.ammoSystemScript.AmmoCountDecrease(1);
                                 StartCoroutine(CoolDownTime());
                             }
                             //above code executes only once inside update so targetPosition won't be updated if trajectory changes, and ball moves towards previous target

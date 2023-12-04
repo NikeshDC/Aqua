@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class ReceiveDamage : MonoBehaviour
 {
-    private HealthSystem healthSystemScript;
+    private HealthAmmoSystem healthSystemScript;
     private ShipCategorizer_Player shipCategorizer_PlayerScript;
 
     private bool thisShipIsPlayer1;
 
     private void Awake()
     {
-        healthSystemScript = GetComponent<HealthSystem>();
+        healthSystemScript = GetComponent<HealthAmmoSystem>();
         shipCategorizer_PlayerScript = GetComponent<ShipCategorizer_Player>();
     }
 

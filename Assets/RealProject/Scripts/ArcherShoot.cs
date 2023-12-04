@@ -28,10 +28,11 @@ public class ArcherShoot : MonoBehaviour
 
     private ShipCategorizer_Level shipCategorizer_LevelScript;
     private ShipCategorizer_Player shipCategorizer_PlayerScript;
+    private HealthAmmoSystem ammoSystemScript;
 
     private float adjustDistanceFactor;
 
-    [SerializeField] private int totalAmmoCount;
+    public int totalAmmoCount;
     private bool sufficientAmmoPresent;
 
     public Transform targetEnemy;
@@ -40,6 +41,7 @@ public class ArcherShoot : MonoBehaviour
     {
         shipCategorizer_LevelScript = GetComponent<ShipCategorizer_Level>();
         shipCategorizer_PlayerScript = GetComponent<ShipCategorizer_Player>();
+        ammoSystemScript = GetComponent<HealthAmmoSystem>();
 
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -209,6 +211,7 @@ public class ArcherShoot : MonoBehaviour
                                     archerControllerScript[i].enableLineRenderer = false;//disable projectile path for cool down time
                                     StartCoroutine(MoveThroughRoute(arrow, routePoints));
                                     totalAmmoCount--;
+                                    ammoSystemScript.AmmoCountDecrease(1);
                                     StartCoroutine(CoolDownTime());
                                 }
                             }

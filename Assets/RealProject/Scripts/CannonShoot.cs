@@ -16,11 +16,15 @@ public class CannonShoot : MonoBehaviour
     private bool sufficientAmmoPresent;
 
     private ShipCategorizer_Level shipCategorizer_LevelScript;
+    public HealthAmmoSystem ammoSystemScript;
 
     public Transform targetEnemy;
 
     private void Awake()
     {
+        shipCategorizer_LevelScript = GetComponent<ShipCategorizer_Level>();
+        ammoSystemScript = GetComponent<HealthAmmoSystem>();
+
         for (int i = 0; i < transform.childCount; i++)
         {
             GameObject gameObject = transform.GetChild(i).gameObject;
@@ -46,8 +50,7 @@ public class CannonShoot : MonoBehaviour
     private void Start()
     {
         sufficientAmmoPresent = true;
-        shipCategorizer_LevelScript = GetComponent<ShipCategorizer_Level>();
-
+        
         if (shipCategorizer_LevelScript.shipLevel == ShipLevels.Level1)
         {
             AssignValue(0);
@@ -91,7 +94,7 @@ public class CannonShoot : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        totalAmmoCount = SetParameters.archerWeaponMaxAmmo[index];
+        totalAmmoCount = SetParameters.mortarWeaponMaxAmmo[index];
     }
 }
 
