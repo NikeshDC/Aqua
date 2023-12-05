@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static AnimationArcher;
 using static ShipCategorizer_Level;
 
 public class ArcherShoot : MonoBehaviour
@@ -11,7 +12,6 @@ public class ArcherShoot : MonoBehaviour
     private float leastDistanceForStraightHit;
     private float adjustCurveAngle;
     private float archerMaxRange;
-    private float waitBeforeShoot_FirstEncounter;
     private float waitBeforeShoot_Aiming;
     private float waitAfterShoot;
     private float totalArcherCount;
@@ -76,7 +76,7 @@ public class ArcherShoot : MonoBehaviour
         arrowVelocity = SetParameters.archerArrowVelocity;
         leastDistanceForStraightHit = SetParameters.archersleastDistanceForStraightHit;
         adjustCurveAngle = SetParameters.archerAdjustCurveAngle;
-        waitBeforeShoot_FirstEncounter = SetParameters.archer_WaitBeforeShoot_FirstEncounter;      
+        sufficientAmmoPresent = true;
     }
 
     private void Start()
@@ -85,7 +85,6 @@ public class ArcherShoot : MonoBehaviour
         {
             archerControllerScript[i].lineRenderer.startWidth = lineWidth;
             archerControllerScript[i].lineRenderer.positionCount = curvePointsTotalCount + 1;
-            archerControllerScript[i].enableLineRenderer = true;
         }
         archerMaxRange = shipCategorizer_LevelScript.weaponRange;
 
@@ -116,11 +115,7 @@ public class ArcherShoot : MonoBehaviour
         {
             Transform B = archerControllerScript[i].B;
 
-            if (!sufficientAmmoPresent)
-            {
-                archerControllerScript[i].enableLineRenderer = false;//during experimentation, showed linerenderer at previous path points
-            }
-            else if (B != null)
+            if (B != null && sufficientAmmoPresent)
             {
                 Transform A = archerControllerScript[i].A;
                 Transform control = archerControllerScript[i].control;
@@ -136,19 +131,9 @@ public class ArcherShoot : MonoBehaviour
 
                 if (distance < archerMaxRange)
                 {
-                    if (targetEnemy == null)
+                    if (targetEnemy == null)//Assign only if targetEnemy is not already equal to target B.
                     {
                         targetEnemy = B;//Ensure rotation of ship towards enemy
-                    }
-
-                    //archer animation, aiming towards enemy
-                    if (lineRenderer.enabled)
-                    {
-                        archerAnimatorScript[i].archerState = AnimationArcher.ArcherStates.aim;
-                    }
-                    else
-                    {
-                        archerAnimatorScript[i].archerState = AnimationArcher.ArcherStates.idle;
                     }
 
                     //Draw Curve from archer to enemy
@@ -173,9 +158,9 @@ public class ArcherShoot : MonoBehaviour
                     float q = (distance + (A.position.y + B.position.y) / 2f) + adjustDistanceFactor;
                     control.transform.position = new Vector3(p, q, r);
 
-                    if (noEnemyInSight)
+                    if (noEnemyInSight)//This block executes if it is first enemy encounter, once enemy has been encountered, we set noEnemyInSight = false, and this block never executes until it is out of sight, where we set it to true.
                     {
-                        archerControllerScript[i].enableLineRenderer = true;//Then now aim animation will play
+                        archerAnimatorScript[i].archerState = ArcherStates.aim;
 
                         //Wait for some time before shoot, then set noEnemyInSight to false
                         StartCoroutine(WaitForFirstWeaponLoad());
@@ -196,7 +181,8 @@ public class ArcherShoot : MonoBehaviour
                                 projectileControllerScript.isArcherOrGunmanProjectile = true;
 
                                 //archer shoot animation
-                                archerAnimatorScript[i].archerState = AnimationArcher.ArcherStates.shoot;
+                                archerAnimatorScript[i].archerState = ArcherStates.shoot;
+                                archerAnimatorScript[i].archerState = ArcherStates.idle;
 
                                 if (arrow != null)
                                 {
@@ -208,7 +194,6 @@ public class ArcherShoot : MonoBehaviour
                                     }
                                     archerControllerScript[i].shootOnce = true;
 
-                                    archerControllerScript[i].enableLineRenderer = false;//disable projectile path for cool down time
                                     StartCoroutine(MoveThroughRoute(arrow, routePoints));
                                     totalAmmoCount--;
                                     ammoSystemScript.AmmoCountDecrease(1);
@@ -223,10 +208,10 @@ public class ArcherShoot : MonoBehaviour
                     archerControllerScript[i].B = null;
                 }
             }
-            else//B = null
+            else if(B == null)
             {
                 //archer idle animation
-                archerAnimatorScript[i].archerState = AnimationArcher.ArcherStates.idle;
+                archerAnimatorScript[i].archerState = ArcherStates.idle;
 
                 //For preventing immediate shoot of arrow without archer aim animation playing when first encountered new ship
                 //Such problem occured only during first encounter, where arrow was shot immediately but no animation played, and no delay was there
@@ -269,9 +254,8 @@ public class ArcherShoot : MonoBehaviour
         yield return new WaitForSeconds(waitBeforeShoot_Aiming);
         for (int i = 0; i < totalArcherCount; i++)
         {
-            archerControllerScript[i].enableLineRenderer = true;//display projectile path again
+            archerAnimatorScript[i].archerState = ArcherStates.aim;
         }
-
         yield return new WaitForSeconds(waitAfterShoot);
         for (int i = 0; i < totalArcherCount; i++)
         {
@@ -282,7 +266,7 @@ public class ArcherShoot : MonoBehaviour
 
     private IEnumerator WaitForFirstWeaponLoad()
     {
-        yield return new WaitForSeconds(waitBeforeShoot_FirstEncounter);
+        yield return new WaitForSeconds(waitBeforeShoot_Aiming);
         for (int i = 0; i < totalArcherCount; i++)
         {
             archerControllerScript[i].noEnemyInSight = false;

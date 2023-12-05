@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static AnimationGunman;
 using static ShipCategorizer_Level;
 
 public class GunShoot : MonoBehaviour
@@ -9,7 +10,6 @@ public class GunShoot : MonoBehaviour
     private float lineWidth;
     private float bulletVelocity;
     private float gunmanMaxRange;
-    private float waitBeforeShoot_FirstEncounter;
     private float waitBeforeShoot_Aiming;
     private float waitAfterShoot;
     private int totalGunmanCount;
@@ -71,7 +71,6 @@ public class GunShoot : MonoBehaviour
         totalGunmanCount = SetParameters.mediumShipMenCount;
         lineWidth = SetParameters.gunmanLineWidth;
         bulletVelocity = SetParameters.gunmanBulletVelocity;
-        waitBeforeShoot_FirstEncounter = SetParameters.gunman_WaitBeforeShoot_FirstEncounter;
         sufficientAmmoPresent = true;
     }
 
@@ -81,7 +80,6 @@ public class GunShoot : MonoBehaviour
         {
             gunmanControllerScript[i].lineRenderer.startWidth = lineWidth;
             gunmanControllerScript[i].lineRenderer.positionCount = 2;
-            gunmanControllerScript[i].enableLineRenderer = true;
         }
         gunmanMaxRange = shipCategorizer_LevelScript.weaponRange;
 
@@ -112,11 +110,7 @@ public class GunShoot : MonoBehaviour
         for (int i = 0; i < totalGunmanCount; i++)
         {
             Transform B = gunmanControllerScript[i].B;
-            if (!sufficientAmmoPresent)
-            {
-                gunmanControllerScript[i].enableLineRenderer = false;//during experimentation, showed linerenderer at previous path points
-            }           
-            else if (B != null)
+            if (B != null && sufficientAmmoPresent)
             {
                 Transform A = gunmanControllerScript[i].A;
                 LineRenderer lineRenderer = gunmanControllerScript[i].lineRenderer;
@@ -130,27 +124,17 @@ public class GunShoot : MonoBehaviour
 
                 if (distance < gunmanMaxRange)
                 {
-                    if (targetEnemy == null)
+                    if (targetEnemy == null)//Assign only if targetEnemy is not already equal to target B.
                     {
                         targetEnemy = B;//Ensure rotation of ship towards enemy
-                    }
-
-                    //gunman animation, aiming towards enemy
-                    if (lineRenderer.enabled)
-                    {
-                        gunmanAnimationScript[i].gunmanState = AnimationGunman.GunmanStates.aim;
-                    }
-                    else
-                    {
-                        gunmanAnimationScript[i].gunmanState = AnimationGunman.GunmanStates.idle;
                     }
 
                     lineRenderer.SetPosition(0, Evaluate(0, A, B));//set start point (vertex = 0, position = Evaluate(0))
                     lineRenderer.SetPosition(1, Evaluate(1, A, B));//set end point
 
-                    if (noEnemyInSight)
+                    if (noEnemyInSight)//This block executes if it is first enemy encounter, once enemy has been encountered, we set noEnemyInSight = false, and this block never executes until it is out of sight, where we set it to true.
                     {
-                        gunmanControllerScript[i].enableLineRenderer = true;
+                        gunmanAnimationScript[i].gunmanState = GunmanStates.aim;
 
                         StartCoroutine(WaitForFirstWeaponLoad());
                     }
@@ -170,7 +154,8 @@ public class GunShoot : MonoBehaviour
                                 projectileControllerScript.isArcherOrGunmanProjectile = true;
 
                                 //gunman shoot animation
-                                gunmanAnimationScript[i].gunmanState = AnimationGunman.GunmanStates.shoot;
+                                gunmanAnimationScript[i].gunmanState = GunmanStates.shoot;
+                                gunmanAnimationScript[i].gunmanState = GunmanStates.aim;
 
                                 if (bullet != null)
                                 {
@@ -178,7 +163,6 @@ public class GunShoot : MonoBehaviour
                                     endPosition = B.transform.position;
                                     gunmanControllerScript[i].shootOnce = true;
 
-                                    gunmanControllerScript[i].enableLineRenderer = false;
                                     StartCoroutine(MoveObject(A.position, endPosition, bullet));
                                     totalAmmoCount--;
                                     ammoSystemScript.AmmoCountDecrease(1);
@@ -193,9 +177,9 @@ public class GunShoot : MonoBehaviour
                     gunmanControllerScript[i].B = null;//once out of range make sure that the final position is not still pointing to previous ship
                 }
             }
-            else//B = null
+            else if(B == null)
             {
-                gunmanAnimationScript[i].gunmanState = AnimationGunman.GunmanStates.idle;
+                gunmanAnimationScript[i].gunmanState = GunmanStates.idle;
 
                 gunmanControllerScript[i].noEnemyInSight = true;
 
@@ -229,7 +213,7 @@ public class GunShoot : MonoBehaviour
         yield return new WaitForSeconds(waitBeforeShoot_Aiming);
         for (int i = 0; i < totalGunmanCount; i++)
         {
-            gunmanControllerScript[i].enableLineRenderer = true;//display projectile path again
+            gunmanAnimationScript[i].gunmanState = GunmanStates.aim;//display projectile path again
         }
 
         yield return new WaitForSeconds(waitAfterShoot);
@@ -241,7 +225,7 @@ public class GunShoot : MonoBehaviour
     }
     private IEnumerator WaitForFirstWeaponLoad()
     {
-        yield return new WaitForSeconds(waitBeforeShoot_FirstEncounter);
+        yield return new WaitForSeconds(waitBeforeShoot_Aiming);
         for (int i = 0; i < totalGunmanCount; i++)
         {
             gunmanControllerScript[i].noEnemyInSight = false;

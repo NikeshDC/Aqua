@@ -8,7 +8,6 @@ public class ArcherController : MonoBehaviour
     public Transform B;
     [HideInInspector] public Transform control;
     [HideInInspector] public LineRenderer lineRenderer;
-    [HideInInspector] public bool enableLineRenderer;
 
     [HideInInspector] public bool shootOnce = false;
     [HideInInspector] public Vector3 endPosition;
@@ -61,25 +60,14 @@ public class ArcherController : MonoBehaviour
     {
         shootArrow = true;
         noEnemyInSight = true;
+        lineRenderer.enabled = false;
     }
 
     private void Update()
     {
         if (B != null)
         {
-            if (enableLineRenderer)
-            {
-                lineRenderer.enabled = true;//show projectile pathway if target is in range
-            }
-            else
-            {
-                lineRenderer.enabled = false;
-            }
             transform.LookAt(B);//archer faces the target ship
-        }
-        else
-        {
-            lineRenderer.enabled = false;//no target, no trajectory
         }
     }
 

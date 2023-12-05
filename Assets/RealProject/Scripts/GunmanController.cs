@@ -10,7 +10,6 @@ public class GunmanController : MonoBehaviour
     [HideInInspector] public GameObject rifle;
 
     [HideInInspector] public bool shootOnce = false;
-    [HideInInspector] public bool enableLineRenderer;
 
     private GameObject projectilePath;
     private GameObject mixamorigHips;
@@ -56,24 +55,13 @@ public class GunmanController : MonoBehaviour
     {
         shootBullet = true;
         noEnemyInSight = true;
+        lineRenderer.enabled = false;
     }
     private void Update()
     {
         if (B != null)
         {
-            transform.LookAt(B);//archer faces the ship
-            if (enableLineRenderer)
-            {
-                lineRenderer.enabled = true;
-            }
-            else
-            {
-                lineRenderer.enabled = false;
-            }
-        }
-        else
-        {
-            lineRenderer.enabled = false;
+            transform.LookAt(B);//archer faces the ship       
         }
     }
 

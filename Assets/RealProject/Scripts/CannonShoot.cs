@@ -5,15 +5,8 @@ using static ShipCategorizer_Level;
 
 public class CannonShoot : MonoBehaviour
 {
-    private GameObject scaleFactorGameObject;
-    private GameObject cannonUnit;
-
-    private readonly GameObject[] shootUnitCannon = new GameObject[SetParameters.mediumShipMenCount];
-
-    private readonly CannonController[] cannonControllerScript = new CannonController[SetParameters.mediumShipMenCount];
-
     public int totalAmmoCount;
-    private bool sufficientAmmoPresent;
+    public bool sufficientAmmoPresent;
 
     private ShipCategorizer_Level shipCategorizer_LevelScript;
     public HealthAmmoSystem ammoSystemScript;
@@ -24,28 +17,6 @@ public class CannonShoot : MonoBehaviour
     {
         shipCategorizer_LevelScript = GetComponent<ShipCategorizer_Level>();
         ammoSystemScript = GetComponent<HealthAmmoSystem>();
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            GameObject gameObject = transform.GetChild(i).gameObject;
-            if (gameObject.name == "ScaleFactorGameObject")
-            {
-                scaleFactorGameObject = gameObject;
-            }
-        }
-        for (int i = 0; i < scaleFactorGameObject.transform.childCount; i++)
-        {
-            GameObject gameObject = scaleFactorGameObject.transform.GetChild(i).gameObject;
-            if (gameObject.name == "CannonUnit")
-            {
-                cannonUnit = gameObject;
-            }
-        }
-        for (int i = 0; i < SetParameters.mediumShipMenCount; i++)
-        {
-            shootUnitCannon[i] = cannonUnit.transform.GetChild(i).gameObject;
-            cannonControllerScript[i] = shootUnitCannon[i].GetComponent<CannonController>();
-        }
     }
     private void Start()
     {
@@ -72,14 +43,6 @@ public class CannonShoot : MonoBehaviour
     private void Update()
     {
         HandleAmmoCount();
-        //Cannon Controller
-        for (int i = 0; i < SetParameters.mediumShipMenCount; i++)
-        {
-            if (!sufficientAmmoPresent)
-            {
-                cannonControllerScript[i].enableLineRenderer = false;//during experimentation, showed linerenderer at previous path points
-            }
-        }
     }
     private void HandleAmmoCount()
     {
@@ -94,18 +57,8 @@ public class CannonShoot : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        totalAmmoCount = SetParameters.mortarWeaponMaxAmmo[index];
+        totalAmmoCount = SetParameters.cannonWeaponMaxAmmo[index];
     }
 }
 
 //Other functional portion in respective CannonController script
-/*
-            if (hasNotShotEvenOnce)
-            {
-                gunmanControllerScript[i].enableLineRenderer = true;
-            }
-            if (Input.GetKeyDown(KeyCode.S))//shoot only if ship is selected
-            {
-                hasNotShotEvenOnce = false;
-            }
- */

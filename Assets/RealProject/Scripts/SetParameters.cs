@@ -61,13 +61,10 @@ public static class SetParameters
     public static int[] mortarWeaponDamage = new int[] { 7, 12, 15, 20 };
 
     //Weapon Reload Speed Initial encounter, same for all levels
-    public static float archer_WaitBeforeShoot_FirstEncounter = 2f;
-    public static float gunman_WaitBeforeShoot_FirstEncounter = 2f;
-    public static float cannon_WaitBeforeShoot_FirstEncounter = 4f;
     public static float mortar_WaitBeforeShoot_FirstEncounter = 4f;
 
     //Weapon Reload Speed
-    public static float[] archer_WaitBeforeShoot_Aiming = new float[] { 4f,3.5f,3f,2.5f };
+    public static float[] archer_WaitBeforeShoot_Aiming = new float[] { 4f, 3.5f, 3f, 2.5f };
     public static float[] archer_WaitAfterShoot = new float[] { 4f, 3.5f, 3f, 2.5f };
 
     public static float[] gunman_WaitBeforeShoot_Aiming = new float[] { 4f, 3.5f, 3f, 2.5f };

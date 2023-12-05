@@ -12,7 +12,6 @@ public class CannonController : MonoBehaviour
     private float cannonBallVelocity;
     private float cannonMaxRange;
     private float cannonShootAngleRange;
-    private float waitBeforeShoot_FirstEncounter;
     private float waitBeforeShoot_Aiming;
     private float waitAfterShoot;
 
@@ -31,10 +30,10 @@ public class CannonController : MonoBehaviour
     private bool shootOnce;
     private Vector3 endPosition;
     private bool withinCannonRotateRange;
-    public bool enableLineRenderer;
 
     private bool shootCannonBall;
     private bool noEnemyInSight;
+    private bool sufficientAmmoPresent;
 
     private CannonShoot cannonShootScript;
     private ShipCategorizer_Level shipCategorizer_LevelScript;
@@ -57,7 +56,6 @@ public class CannonController : MonoBehaviour
         lineWidth = SetParameters.cannonLineWidth;
         cannonBallVelocity = SetParameters.cannonBallVelocity;
         cannonShootAngleRange = SetParameters.cannonShootAngleRange;
-        waitBeforeShoot_FirstEncounter = SetParameters.cannon_WaitBeforeShoot_FirstEncounter; 
     }
 
     private void Start()
@@ -69,7 +67,6 @@ public class CannonController : MonoBehaviour
         shipGameObject = MortarController.FindHighestParent(transform);
         myShipCenter = shipGameObject.GetChild(0);
         cannonShootScript = shipGameObject.GetComponent<CannonShoot>();
-        enableLineRenderer = true;
 
         shootCannonBall = true;
         noEnemyInSight = true;
@@ -100,8 +97,9 @@ public class CannonController : MonoBehaviour
     private void Update()
     {
         myShipPosition = myShipCenter.position;
+        sufficientAmmoPresent = cannonShootScript.sufficientAmmoPresent;
 
-        if (B != null)
+        if (B != null && sufficientAmmoPresent)
         {
             float distance = Vector3.Distance(myShipPosition, B.position);
 
@@ -119,22 +117,12 @@ public class CannonController : MonoBehaviour
 
                 if (withinCannonRotateRange)
                 {
-                    if (enableLineRenderer)
-                    {
-                        lineRenderer.enabled = true;
-                    }
-                    else
-                    {
-                        lineRenderer.enabled = false;
-                    }
-
                     lineRenderer.SetPosition(0, Evaluate(0, A, B));//set start point (vertex = 0, position = Evaluate(0))
                     lineRenderer.SetPosition(1, Evaluate(1, A, B));//set end point
                     cannonRotator.transform.LookAt(B.position);//we set the x-rotation of gameobject to -8, so that the gameobject aligns with the cannons shooting end
 
                     if (noEnemyInSight)
                     {
-                        enableLineRenderer = true;
                         StartCoroutine(WaitForFirstWeaponLoad());
                     }
                     else
@@ -156,7 +144,6 @@ public class CannonController : MonoBehaviour
                                     cannonBall.transform.position = A.position;
                                     endPosition = B.transform.position;
                                     shootOnce = true;
-                                    enableLineRenderer = false;
                                     StartCoroutine(MoveObject(A.position, endPosition, cannonBall));
                                     cannonShootScript.totalAmmoCount--;
                                     cannonShootScript.ammoSystemScript.AmmoCountDecrease(1);
@@ -168,10 +155,6 @@ public class CannonController : MonoBehaviour
                         }
                     }
                 }
-                else
-                {
-                    lineRenderer.enabled = false;
-                }
             }
             else
             {
@@ -180,7 +163,6 @@ public class CannonController : MonoBehaviour
         }
         else//B = null
         {
-            lineRenderer.enabled = false;//persisting line renderer is no longer visible
             noEnemyInSight = true;
 
             if (cannonShootScript.targetEnemy != null)//Check ensures single assigning by any one CannonController script only
@@ -210,14 +192,14 @@ public class CannonController : MonoBehaviour
     private IEnumerator CoolDownTime()
     {
         yield return new WaitForSeconds(waitBeforeShoot_Aiming);
-        enableLineRenderer = true;
+        //something like cannonball loading animation if required
         yield return new WaitForSeconds(waitAfterShoot);
         shootOnce = false;
         shootCannonBall = true;
     }
     private IEnumerator WaitForFirstWeaponLoad()
     {
-        yield return new WaitForSeconds(waitBeforeShoot_FirstEncounter);
+        yield return new WaitForSeconds(waitBeforeShoot_Aiming);
         noEnemyInSight = false;
     }
     private Vector3 Evaluate(float t)
