@@ -57,7 +57,7 @@ public class CannonShoot : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        totalAmmoCount = SetParameters.cannonWeaponMaxAmmo[index];
+        totalAmmoCount = SetParameters.CannonWeaponMaxAmmo[index];
     }
 }
 

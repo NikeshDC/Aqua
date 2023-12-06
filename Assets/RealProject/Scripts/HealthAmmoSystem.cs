@@ -71,7 +71,7 @@ public class HealthAmmoSystem : MonoBehaviour
     {
         if (!TryGetComponent<ShipCategorizer_Level>(out _))
         {
-            maxShipHealth = SetParameters.supplyShipHealth;
+            maxShipHealth = SetParameters.SupplyShipHealth;
             maxShipMenHealth = 0;
             maxAmmo = 0;
         }

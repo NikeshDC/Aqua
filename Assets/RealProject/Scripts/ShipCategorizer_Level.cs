@@ -48,34 +48,34 @@ public class ShipCategorizer_Level : MonoBehaviour
     {
         if (targetingSystem_PhysicsOverlapSphereScript.thisShipType == TargetingSystem_PhysicsOverlapSphere.ShipType.ArcherShip)
         {
-            weaponRange = SetParameters.archerWeaponRange[index];
-            shipHealth = SetParameters.archerShipHealth[index];
-            shipMenHealth = SetParameters.archerShipMenHealth[index];
-            weaponDamage = SetParameters.archerWeaponDamage[index];
+            weaponRange = SetParameters.ArcherWeaponRange[index];
+            shipHealth = SetParameters.ArcherShipHealth[index];
+            shipMenHealth = SetParameters.ArcherShipMenHealth[index];
+            weaponDamage = SetParameters.ArcherWeaponDamage[index];
         }
         else if (targetingSystem_PhysicsOverlapSphereScript.thisShipType == TargetingSystem_PhysicsOverlapSphere.ShipType.CannonShip)
         {
-            weaponRange = SetParameters.cannonWeaponRange[index];
-            shipHealth = SetParameters.cannonShipHealth[index];
-            shipMenHealth = SetParameters.cannonShipMenHealth[index];
-            weaponDamage = SetParameters.cannonWeaponDamage[index];
+            weaponRange = SetParameters.CannonWeaponRange[index];
+            shipHealth = SetParameters.CannonShipHealth[index];
+            shipMenHealth = SetParameters.CannonShipMenHealth[index];
+            weaponDamage = SetParameters.CannonWeaponDamage[index];
         }
         else if (targetingSystem_PhysicsOverlapSphereScript.thisShipType == TargetingSystem_PhysicsOverlapSphere.ShipType.GunmanShip)
         {
-            weaponRange = SetParameters.gunmanWeaponRange[index];
-            shipHealth = SetParameters.gunmanShipHealth[index];
-            shipMenHealth = SetParameters.gunmanShipMenHealth[index];
-            weaponDamage = SetParameters.gunmanWeaponDamage[index];
+            weaponRange = SetParameters.GunmanWeaponRange[index];
+            shipHealth = SetParameters.GunmanShipHealth[index];
+            shipMenHealth = SetParameters.GunmanShipMenHealth[index];
+            weaponDamage = SetParameters.GunmanWeaponDamage[index];
         }
         else if (targetingSystem_PhysicsOverlapSphereScript.thisShipType == TargetingSystem_PhysicsOverlapSphere.ShipType.MortarShip)
         {
-            weaponRange = SetParameters.mortarWeaponRange[index];
-            shipHealth = SetParameters.mortarShipHealth[index];
-            shipMenHealth = SetParameters.mortarShipMenHealth[index];
-            weaponDamage = SetParameters.mortarWeaponDamage[index];
+            weaponRange = SetParameters.MortarWeaponRange[index];
+            shipHealth = SetParameters.MortarShipHealth[index];
+            shipMenHealth = SetParameters.MortarShipMenHealth[index];
+            weaponDamage = SetParameters.MortarWeaponDamage[index];
         }
 
-        shipSpeed = SetParameters.shipSpeed[index];
-        shipCost = SetParameters.shipCost[index];
+        shipSpeed = SetParameters.ShipSpeed[index];
+        shipCost = SetParameters.ShipCost[index];
     }
 }

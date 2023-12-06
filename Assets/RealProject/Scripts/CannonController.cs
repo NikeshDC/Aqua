@@ -53,9 +53,9 @@ public class CannonController : MonoBehaviour
             }
         }
 
-        lineWidth = SetParameters.cannonLineWidth;
-        cannonBallVelocity = SetParameters.cannonBallVelocity;
-        cannonShootAngleRange = SetParameters.cannonShootAngleRange;
+        lineWidth = SetParameters.CannonLineWidth;
+        cannonBallVelocity = SetParameters.CannonBallVelocity;
+        cannonShootAngleRange = SetParameters.CannonShootAngleRange;
     }
 
     private void Start()
@@ -270,7 +270,7 @@ public class CannonController : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        waitBeforeShoot_Aiming = SetParameters.cannon_WaitBeforeShoot_Aiming[index];
-        waitAfterShoot = SetParameters.cannon_WaitAfterShoot[index];
+        waitBeforeShoot_Aiming = SetParameters.CannonWaitBeforeShootAiming[index];
+        waitAfterShoot = SetParameters.CannonWaitAfterShoot[index];
     }
 }

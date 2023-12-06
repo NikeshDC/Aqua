@@ -19,9 +19,9 @@ public class GunShoot : MonoBehaviour
     private GameObject scaleFactorGameObject;
     private GameObject shipCenter;
     private GameObject gunmanParentObject;
-    private readonly GameObject[] gunmen = new GameObject[SetParameters.mediumShipMenCount];
-    private readonly GunmanController[] gunmanControllerScript = new GunmanController[SetParameters.mediumShipMenCount];
-    private readonly AnimationGunman[] gunmanAnimationScript = new AnimationGunman[SetParameters.mediumShipMenCount];
+    private readonly GameObject[] gunmen = new GameObject[SetParameters.MediumShipMenCount];
+    private readonly GunmanController[] gunmanControllerScript = new GunmanController[SetParameters.MediumShipMenCount];
+    private readonly AnimationGunman[] gunmanAnimationScript = new AnimationGunman[SetParameters.MediumShipMenCount];
 
     private Vector3 endPosition;
 
@@ -61,16 +61,16 @@ public class GunShoot : MonoBehaviour
                 gunmanParentObject = gameObject;
             }
         }
-        for (int i = 0; i < SetParameters.mediumShipMenCount; i++)
+        for (int i = 0; i < SetParameters.MediumShipMenCount; i++)
         {
             gunmen[i] = gunmanParentObject.transform.GetChild(i).gameObject;
             gunmanControllerScript[i] = gunmen[i].GetComponent<GunmanController>();
             gunmanAnimationScript[i] = gunmen[i].GetComponent<AnimationGunman>();
         }
 
-        totalGunmanCount = SetParameters.mediumShipMenCount;
-        lineWidth = SetParameters.gunmanLineWidth;
-        bulletVelocity = SetParameters.gunmanBulletVelocity;
+        totalGunmanCount = SetParameters.MediumShipMenCount;
+        lineWidth = SetParameters.GunmanLineWidth;
+        bulletVelocity = SetParameters.GunmanBulletVelocity;
         sufficientAmmoPresent = true;
     }
 
@@ -238,9 +238,9 @@ public class GunShoot : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        waitBeforeShoot_Aiming = SetParameters.gunman_WaitBeforeShoot_Aiming[index];
-        waitAfterShoot = SetParameters.gunman_WaitAfterShoot[index];
-        totalAmmoCount = SetParameters.gunmanWeaponMaxAmmo[index];
+        waitBeforeShoot_Aiming = SetParameters.GunmanWaitBeforeShootAiming[index];
+        waitAfterShoot = SetParameters.GunmanWaitAfterShoot[index];
+        totalAmmoCount = SetParameters.GunmanWeaponMaxAmmo[index];
     }
     private void HandleAmmoCount()
     {

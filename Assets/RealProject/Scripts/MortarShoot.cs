@@ -57,7 +57,7 @@ public class MortarShoot : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        totalAmmoCount = SetParameters.mortarWeaponMaxAmmo[index];
+        totalAmmoCount = SetParameters.MortarWeaponMaxAmmo[index];
     }
 }
 //Other functional portion in respective Mortar Controller script

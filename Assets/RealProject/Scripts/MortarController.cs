@@ -18,7 +18,7 @@ public class MortarController : MonoBehaviour
     private float waitAfterShoot;
 
     private float adjustDistanceFactor;
-    private Vector3[] routePoints = new Vector3[SetParameters.curvePointsTotalCount + 1];
+    private Vector3[] routePoints = new Vector3[SetParameters.CurvePointsTotalCount + 1];
     [SerializeField] private ObjectPool_Projectile objectPoolMortarScript;
 
     private Transform shipGameObject;
@@ -38,10 +38,10 @@ public class MortarController : MonoBehaviour
 
     private void Awake()
     {
-        lineWidth = SetParameters.mortarLineWidth;
-        mortarBombVelocity = SetParameters.mortarBombVelocity;
-        adjustCurveAngle = SetParameters.mortarAdjustCurveAngle;
-        curvePointsTotalCount = SetParameters.curvePointsTotalCount;
+        lineWidth = SetParameters.MortarLineWidth;
+        mortarBombVelocity = SetParameters.MortarBombVelocity;
+        adjustCurveAngle = SetParameters.MortarAdjustCurveAngle;
+        curvePointsTotalCount = SetParameters.CurvePointsTotalCount;
     }
 
     private void Start()
@@ -238,7 +238,7 @@ public class MortarController : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        waitBeforeShoot_Aiming = SetParameters.mortar_WaitBeforeShoot_Aiming[index];
-        waitAfterShoot = SetParameters.mortar_WaitAfterShoot[index];
+        waitBeforeShoot_Aiming = SetParameters.MortarWaitBeforeShootAiming[index];
+        waitAfterShoot = SetParameters.MortarWaitAfterShoot[index];
     }
 }

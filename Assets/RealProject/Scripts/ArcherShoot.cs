@@ -22,9 +22,9 @@ public class ArcherShoot : MonoBehaviour
     private GameObject scaleFactorGameObject;
     private GameObject myShipCenter;
     private GameObject archerParentObject;
-    private GameObject[] archers = new GameObject[SetParameters.mediumShipMenCount];
-    private ArcherController[] archerControllerScript = new ArcherController[SetParameters.mediumShipMenCount];
-    private AnimationArcher[] archerAnimatorScript = new AnimationArcher[SetParameters.mediumShipMenCount];
+    private GameObject[] archers = new GameObject[SetParameters.MediumShipMenCount];
+    private ArcherController[] archerControllerScript = new ArcherController[SetParameters.MediumShipMenCount];
+    private AnimationArcher[] archerAnimatorScript = new AnimationArcher[SetParameters.MediumShipMenCount];
 
     private ShipCategorizer_Level shipCategorizer_LevelScript;
     private ShipCategorizer_Player shipCategorizer_PlayerScript;
@@ -63,19 +63,19 @@ public class ArcherShoot : MonoBehaviour
                 archerParentObject = gameObject;
             }
         }
-        for (int i = 0; i < SetParameters.mediumShipMenCount; i++)
+        for (int i = 0; i < SetParameters.MediumShipMenCount; i++)
         {
             archers[i] = archerParentObject.transform.GetChild(i).gameObject;
             archerControllerScript[i] = archers[i].GetComponent<ArcherController>();
             archerAnimatorScript[i] = archers[i].GetComponent<AnimationArcher>();
         }
 
-        totalArcherCount = SetParameters.mediumShipMenCount;
-        curvePointsTotalCount = SetParameters.curvePointsTotalCount;
-        lineWidth = SetParameters.archerLineWidth;        
-        arrowVelocity = SetParameters.archerArrowVelocity;
-        leastDistanceForStraightHit = SetParameters.archersleastDistanceForStraightHit;
-        adjustCurveAngle = SetParameters.archerAdjustCurveAngle;
+        totalArcherCount = SetParameters.MediumShipMenCount;
+        curvePointsTotalCount = SetParameters.CurvePointsTotalCount;
+        lineWidth = SetParameters.ArcherLineWidth;        
+        arrowVelocity = SetParameters.ArcherArrowVelocity;
+        leastDistanceForStraightHit = SetParameters.ArchersleastDistanceForStraightHit;
+        adjustCurveAngle = SetParameters.ArcherAdjustCurveAngle;
         sufficientAmmoPresent = true;
     }
 
@@ -282,9 +282,9 @@ public class ArcherShoot : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        waitBeforeShoot_Aiming = SetParameters.archer_WaitBeforeShoot_Aiming[index];
-        waitAfterShoot = SetParameters.archer_WaitAfterShoot[index];
-        totalAmmoCount = SetParameters.archerWeaponMaxAmmo[index];
+        waitBeforeShoot_Aiming = SetParameters.ArcherWaitBeforeShootAiming[index];
+        waitAfterShoot = SetParameters.ArcherWaitAfterShoot[index];
+        totalAmmoCount = SetParameters.ArcherWeaponMaxAmmo[index];
     }
 
     private void HandleAmmoCount()

@@ -14,11 +14,11 @@ public class TargetingSystem_PhysicsOverlapSphere : MonoBehaviour
     private GameObject parentShooterObject;
     private string shooter;
 
-    private readonly GameObject[] shooters = new GameObject[SetParameters.mediumShipMenCount];
-    private readonly ArcherController[] archerControllerScript = new ArcherController[SetParameters.mediumShipMenCount];
-    private readonly CannonController[] cannonControllerScript = new CannonController[SetParameters.mediumShipMenCount];
-    private readonly GunmanController[] gunmanControllerScript = new GunmanController[SetParameters.mediumShipMenCount];
-    private readonly MortarController[] mortarControllerScript = new MortarController[SetParameters.mediumShipMenCount];
+    private readonly GameObject[] shooters = new GameObject[SetParameters.MediumShipMenCount];
+    private readonly ArcherController[] archerControllerScript = new ArcherController[SetParameters.MediumShipMenCount];
+    private readonly CannonController[] cannonControllerScript = new CannonController[SetParameters.MediumShipMenCount];
+    private readonly GunmanController[] gunmanControllerScript = new GunmanController[SetParameters.MediumShipMenCount];
+    private readonly MortarController[] mortarControllerScript = new MortarController[SetParameters.MediumShipMenCount];
 
     private Transform shipCenter;
     //public bool testActiveShip;

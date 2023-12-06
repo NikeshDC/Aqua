@@ -102,7 +102,7 @@ public class ShipAlignTowardsEnemy : MonoBehaviour
     }
     private void AssignValue(int index)
     {
-        speed = SetParameters.shipRotationSpeed[index];
+        speed = SetParameters.ShipRotationSpeed[index];
     }
 }
 
